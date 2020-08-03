@@ -1,12 +1,14 @@
 import React from "react";
-import ReservationForm from "./ReservationForm";
-import ReservationList from "./ReservationList/ReservationList";
+import ReservationForm from "../ReservationForm/ReservationForm";
+import ReservationList from "../ReservationList/ReservationList";
 import { observer } from "mobx-react-lite";
+import Styles from "./ReservationDashboard.module.scss";
+
 export const ReservationDashboard = () => {
   return (
     <div>
       <ReservationList />
-      <div style={{ width: "80%" }}>
+      <div className={Styles["reservation-form"]}>
         <ReservationForm />
       </div>
     </div>

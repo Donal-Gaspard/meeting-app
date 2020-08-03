@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import ReservationItem from "../ReservationItem";
 import { Button, Badge } from "react-bootstrap";
 
-import styles from "./ReservationList.module.scss";
+import Styles from "./ReservationList.module.scss";
 export const ReservationList = () => {
   const reservationStore = useContext(ReservationStore);
   const { ReservationByDate } = reservationStore;
@@ -20,11 +20,13 @@ export const ReservationList = () => {
 
   return (
     <div style={{ marginTop: "20px" }}>
-      <Button variant="primary">
-        My Reservation <Badge variant="light">{ReservationByDate.length}</Badge>
-        <span className="sr-only">My reservations</span>
-      </Button>
-      <div className={styles.reservation_list}>{displayReservations}</div>
+      <div className={Styles["reservation-title"]}>
+        <Button variant="primary">
+          My Reservation{" "}
+          <Badge variant="light">{ReservationByDate.length}</Badge>
+        </Button>
+      </div>
+      <div className={Styles.reservation_list}>{displayReservations}</div>
     </div>
   );
 };

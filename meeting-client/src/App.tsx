@@ -5,7 +5,7 @@ import UserStore from "./store/UserStore";
 import { observer } from "mobx-react-lite";
 import Rooms from "./components/Rooms/Rooms";
 import { Spinner, Container } from "react-bootstrap/esm";
-import ReservationDashboard from "./components/Reservations/ReservationDashboard";
+import ReservationDashboard from "./components/Reservations/ReservationDashboard/ReservationDashboard";
 import RoomStore from "./store/RoomStore";
 import { Row, Col } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
@@ -27,7 +27,7 @@ function App() {
     );
   return (
     <div className="App">
-      <ToastContainer autoClose={2000} position="bottom-right" />
+      <ToastContainer autoClose={3000} position="bottom-right" />
       {currentUser && <Header name={currentUser.name} />}
       <Container fluid>
         <Row>

@@ -14,11 +14,20 @@ class ReservationStore {
 
   @observable timePeriods: string[] = [];
   @observable reservationRegistry = new Map(); // fix error with nested item
-  @observable currentReservation: IReservation | null = null;
+  @observable defautReservation: IReservation = {
+    id: "",
+    userId: 1,
+    name: "",
+    date: "",
+    timePeriod: "",
+    room: undefined,
+  };
+  @observable currentReservation: IReservation | null = this.defautReservation;
   @observable editMode = false;
   @observable avaibillities: string[] = [];
   @observable reservations: IReservation[] = [];
   @observable currentRoom: string | undefined = "";
+
   @action loadReservations = async () => {
     try {
       this.loading = true;
@@ -57,7 +66,8 @@ class ReservationStore {
   };
 
   @action cancelEdit = () => {
-    this.currentReservation = null;
+    this.currentReservation = this.defautReservation;
+    this.editMode = false;
   };
   @action selectResevation = (id: string) => {
     if (!id) {

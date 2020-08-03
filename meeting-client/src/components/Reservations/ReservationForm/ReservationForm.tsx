@@ -1,17 +1,24 @@
-import React, { useContext, useState, useEffect, Fragment } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  Fragment,
+  useRef,
+} from "react";
 import { Card, Form, Badge } from "react-bootstrap";
-import IReservation from "../../models/IReservation";
-import ReservationStore from "../../store/ReservationStore";
+import IReservation from "../../../models/IReservation";
+import ReservationStore from "../../../store/ReservationStore";
 import { observer } from "mobx-react-lite";
 import { Button } from "react-bootstrap/esm";
-import RoomStore from "../../store/RoomStore";
-
+import RoomStore from "../../../store/RoomStore";
+import Styles from "./ReservationForm.module.scss";
 const defautReservation: IReservation = {
   id: "",
   userId: 1,
   name: "",
   date: "",
   timePeriod: "",
+  room: undefined,
 };
 const EditReservation = () => {
   const reservationStore = useContext(ReservationStore);
@@ -20,6 +27,7 @@ const EditReservation = () => {
   const [currentRoom, setCurrentRoom] = useState<number | null>(null);
   const [validated, setValidated] = useState(false);
   const [roomAndDateselected, setRoomAndDateSelected] = useState(false);
+  const [periods, setPeriods] = useState<string[]>([]);
   const {
     currentReservation: initialReservation,
     editReservation,
@@ -28,28 +36,46 @@ const EditReservation = () => {
     getAvaibillities,
     avaibillities,
     editMode,
+    listPeriod,
+    timePeriods,
   } = reservationStore;
 
   const [reservation, setReservation] = useState<IReservation>(
     defautReservation
   );
+  const formRef = useRef(null);
 
   useEffect(() => {
     if (initialReservation?.id) {
+      listPeriod();
       setReservation(initialReservation);
     }
-  }, [initialReservation]);
+  }, [initialReservation, listPeriod]);
 
   useEffect(() => {
-    if (currentRoom && reservation.date) {
+    if (currentRoom && reservation.date && !editMode) {
       setRoomAndDateSelected(true);
       getAvaibillities(currentRoom, reservation.date);
+      setPeriods(avaibillities);
     } else {
       setRoomAndDateSelected(false);
+      console.log("timePeriods", timePeriods);
+      setPeriods(timePeriods);
     }
-  }, [currentRoom, getAvaibillities, reservation.date]);
+    // if (editMode && currentRoom) {
+    //   setPeriods(timePeriods);
+    // }
+  }, [
+    avaibillities,
+    currentRoom,
+    editMode,
+    getAvaibillities,
+    listPeriod,
+    reservation.date,
+    timePeriods,
+  ]);
 
-  const displayTimePeriods = avaibillities.map((hour) => (
+  const displayTimePeriods = periods.map((hour) => (
     <option key={hour}>{hour}</option>
   ));
 
@@ -74,33 +100,46 @@ const EditReservation = () => {
   };
 
   const displayTitle = editMode ? (
-    <b>Edit Reservation {initialReservation?.name} </b>
+    <div className={Styles["reservation-form-title"]}>
+      Edit Reservation {initialReservation?.name}
+    </div>
   ) : (
-    <b>Create Reservation</b>
+    <div className={Styles["reservation-form-title"]}>Create Reservation</div>
   );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();
       setValidated(false);
     }
     if (editMode) {
+      console.log("Edit :>> ");
       editReservation(reservation);
       setReservation(defautReservation);
     } else {
+      console.log("create :>> ");
       addReservation(reservation);
       setReservation(defautReservation);
     }
   };
+  const cancelEditHandle = () => {
+    cancelEdit();
+    handleReset();
+    setReservation(defautReservation);
+  };
+  const handleReset = () => {
+    (formRef?.current as any).reset();
+    setValidated(false);
+  };
 
   return (
-    <Fragment>
+    <div>
       {displayTitle}
       <Card>
         <Card.Body>
-          <Form validated={validated} onSubmit={handleSubmit}>
+          <Form validated={validated} onSubmit={handleSubmit} ref={formRef}>
             <Form.Group controlId="MeetingName">
               <Form.Label>Meeting name</Form.Label>
               <Form.Control
@@ -110,7 +149,6 @@ const EditReservation = () => {
                 type="text"
                 placeholder="Enter meeting name"
                 value={reservation.name}
-                pattern="[A-Za-z]{3}"
                 required
               />
               <Form.Control.Feedback type="invalid">
@@ -150,13 +188,15 @@ const EditReservation = () => {
               </Form.Control.Feedback>
             </Form.Group>
 
-            {roomAndDateselected && (
+            {(roomAndDateselected || editMode) && (
               <Form.Group controlId="timePeriods">
                 <Form.Label>
                   time period
-                  <Badge style={{ marginLeft: "8px" }} variant="success">
-                    {avaibillities.length} availabilities
-                  </Badge>
+                  {!editMode && (
+                    <Badge style={{ marginLeft: "8px" }} variant="success">
+                      {avaibillities.length} availabilities
+                    </Badge>
+                  )}
                 </Form.Label>
                 <Form.Control
                   value={reservation.timePeriod}
@@ -178,7 +218,7 @@ const EditReservation = () => {
               <Button
                 style={{ float: "left" }}
                 size="sm"
-                onClick={cancelEdit}
+                onClick={cancelEditHandle}
                 variant="warning"
               >
                 Cancel
@@ -195,7 +235,7 @@ const EditReservation = () => {
           </Form>
         </Card.Body>
       </Card>
-    </Fragment>
+    </div>
   );
 };
 export default observer(EditReservation);

@@ -1,4 +1,9 @@
 .reservation_list {
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.reservation-title {
+  margin: 2rem;
 }

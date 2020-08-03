@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var reservations = await _context.Reservations.Include(x=>x.Room).ToListAsync();
+            var reservations = await _context.Reservations.Include(x => x.Room).ToListAsync();
             return Ok(reservations);
         }
 
@@ -43,7 +43,7 @@ namespace API.Controllers
         [HttpGet("avaibillities")]
         public async Task<IActionResult> CheckAvaibillities(int roomId, DateTime date)
         {
-            var timePeriods = await _context.Reservations.Where(x => x.RoomId == roomId && x.Date.Date == date).Select(x=>x.TimePeriod).ToListAsync();
+            var timePeriods = await _context.Reservations.Where(x => x.RoomId == roomId && x.Date.Date == date).Select(x => x.TimePeriod).ToListAsync();
             var Times = TimePeriods.GetAvaibillities(timePeriods);
             return Ok(Times);
         }
@@ -52,22 +52,25 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Reservation reservation)
         {
-
-            var reserv = new Reservation
+            if (ModelState.IsValid)
             {
-                Id = reservation.Id,
-                Name = reservation.Name,
-                RoomId = reservation.RoomId,
-                UserId = reservation.UserId,
-                TimePeriod = reservation.TimePeriod,
-                Date = reservation.Date
-            };
+                var reserv = new Reservation
+                {
+                    Id = reservation.Id,
+                    Name = reservation.Name,
+                    RoomId = reservation.RoomId,
+                    UserId = reservation.UserId,
+                    TimePeriod = reservation.TimePeriod,
+                    Date = reservation.Date
+                };
 
-             _context.Reservations.Add(reserv);
-            
-             await _context.SaveChangesAsync();
-            _logger.LogInformation($"resevation save id: {reservation.Id}");
-            return Ok(reservation);
+                _context.Reservations.Add(reserv);
+
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"resevation save id: {reservation.Id}");
+                return Ok(reservation);
+            }
+            return BadRequest(ModelState.Values.SelectMany(v => v.Errors).ToList());
         }
 
         [HttpPut("{id}")]
