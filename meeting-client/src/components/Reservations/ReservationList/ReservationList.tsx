@@ -19,7 +19,7 @@ export const ReservationList = () => {
   });
 
   return (
-    <div style={{ marginTop: "20px" }}>
+    <div className={Styles["reservation-dashboard"]}>
       <div className={Styles["reservation-title"]}>
         <Button variant="primary">
           My Reservation{" "}

@@ -74,7 +74,7 @@ namespace API.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError("Error occurend creating reservation", ex);
-                        return StatusCode(500);
+                    return StatusCode(500);
                 }
             }
             return BadRequest(ModelState.Values.SelectMany(v => v.Errors).ToList());
@@ -83,44 +83,65 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(Guid id, Reservation reservation)
         {
-            var reservationDb = await _context.Reservations.FirstOrDefaultAsync(x => x.Id == id);
-            if (reservationDb == null)
-                throw new Exception("Could not find reservation");
-            if (reservationDb.RoomId != reservation.RoomId)
+            try
             {
-                _context.Reservations.Remove(reservationDb);
-                var newReservation = new Reservation()
+                var reservationDb = await _context.Reservations.FirstOrDefaultAsync(x => x.Id == id);
+                if (reservationDb == null)
+                    throw new Exception("Could not find reservation");
+                if (reservationDb.RoomId != reservation.RoomId)
                 {
-                    Id = reservation.Id,
-                    UserId = 1,
-                    Name = reservation.Name,
-                    Date = reservation.Date,
-                    TimePeriod = reservation.TimePeriod,
-                    RoomId = reservation.RoomId,
-                };
-                await _context.Reservations.AddAsync(newReservation);
+                    _context.Reservations.Remove(reservationDb);
+                    var newReservation = new Reservation()
+                    {
+                        Id = reservation.Id,
+                        UserId = 1,
+                        Name = reservation.Name,
+                        Date = reservation.Date,
+                        TimePeriod = reservation.TimePeriod,
+                        RoomId = reservation.RoomId,
+                    };
+                    await _context.Reservations.AddAsync(newReservation);
+                }
+                else
+                {
+                    reservationDb.Name = reservation.Name;
+                    reservationDb.Date = reservation.Date;
+                    reservationDb.TimePeriod = reservation.TimePeriod;
+                }
+                await _context.SaveChangesAsync();
+                ReservasionsStore.Save(_context.Reservations.ToList());
+                return Ok("Done!");
             }
-            else
+            
+            catch (Exception ex)
             {
-                reservationDb.Name = reservation.Name;
-                reservationDb.Date = reservation.Date;
-                reservationDb.TimePeriod = reservation.TimePeriod;
+                _logger.LogError("Error occurend creating reservation", ex);
+                return StatusCode(500);
             }
-            await _context.SaveChangesAsync();
-            return Ok("Done!");
+ ;
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var reservation = await _context.Reservations.FirstOrDefaultAsync(x => x.Id == id);
+            try
+            {
+                var reservation = await _context.Reservations.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (reservation == null) return NotFound();
+                if (reservation == null) return NotFound();
 
-            _context.Reservations.Remove(reservation);
-            await _context.SaveChangesAsync();
+                _context.Reservations.Remove(reservation);
 
-            return Ok("Done!");
+                await _context.SaveChangesAsync();
+                ReservasionsStore.Save(_context.Reservations.ToList());
+
+                return Ok("Done!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occurend creating reservation", ex);
+                return StatusCode(500);
+            }
         }
 
     }

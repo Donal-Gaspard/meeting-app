@@ -4,8 +4,8 @@ import { observer } from "mobx-react-lite";
 import { Spinner, Row } from "react-bootstrap";
 import ReservationsRoomList from "./ReservationsRoomList";
 import RoomSelect from "../../UI/RoomSelect";
-
- const Rooms = () => {
+import Styles from './Rooms.module.scss'
+const Rooms = () => {
   const roomStore = useContext(RoomStore);
   const { loadingDetails } = roomStore;
 
@@ -14,11 +14,14 @@ import RoomSelect from "../../UI/RoomSelect";
   }, [roomStore]);
 
   return (
-    <div style={{ padding: "25px 0" }}>
+    <div className={Styles["rooms"]}>
       <RoomSelect variant="primary" />
       {loadingDetails && <Spinner animation="border" size="sm" />}
-      <Row className="justify-content-md-center">
+      <Row>
+        <div className={Styles["room-list"]}>
         <ReservationsRoomList />
+
+        </div>
       </Row>
     </div>
   );

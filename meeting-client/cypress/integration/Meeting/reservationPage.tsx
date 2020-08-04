@@ -150,7 +150,7 @@ describe("reservation page tests", () => {
     cy.get(".btn-success").should("have.value", "");
   });
 
-  it.only("should be edit and cancel", () => {
+  it("should be edit and cancel", () => {
     const { name, roomId, date } = reservation;
     cy.get("#MeetingName").type(name);
     cy.get("#MeetingName").should("have.value", name);

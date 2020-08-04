@@ -22,7 +22,7 @@ const RoomSelect: React.FC<{ variant: string }> = ({ variant }) => {
     <DropdownButton
       variant={variant}
       id="dropdown-basic-button"
-      title="Rooms list"
+      title="Rooms Reservations"
     >
       {displayRooms}
     </DropdownButton>
