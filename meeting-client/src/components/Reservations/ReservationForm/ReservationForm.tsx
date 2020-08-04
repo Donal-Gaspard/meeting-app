@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { Card, Form, Badge } from "react-bootstrap";
 import IReservation from "../../../models/IReservation";
 import ReservationStore from "../../../store/ReservationStore";
@@ -11,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { Button } from "react-bootstrap/esm";
 import RoomStore from "../../../store/RoomStore";
 import Styles from "./ReservationForm.module.scss";
+
 const defautReservation: IReservation = {
   id: "",
   userId: 1,
@@ -58,12 +54,8 @@ const EditReservation = () => {
       setPeriods(avaibillities);
     } else {
       setRoomAndDateSelected(false);
-      console.log("timePeriods", timePeriods);
       setPeriods(timePeriods);
     }
-    // if (editMode && currentRoom) {
-    //   setPeriods(timePeriods);
-    // }
   }, [
     avaibillities,
     currentRoom,
@@ -114,13 +106,11 @@ const EditReservation = () => {
       setValidated(false);
     }
     if (editMode) {
-      console.log("Edit :>> ");
       editReservation(reservation);
       setReservation(defautReservation);
       handleReset();
       setValidated(false);
     } else {
-      console.log("create :>> ");
       addReservation(reservation);
       setReservation(defautReservation);
     }

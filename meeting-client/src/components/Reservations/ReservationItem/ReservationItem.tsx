@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import ReservationStore from "../../store/ReservationStore";
+import ReservationStore from "../../../store/ReservationStore";
 import { Card, Button } from "react-bootstrap";
-import IReservation from "../../models/IReservation";
-
+import IReservation from "../../../models/IReservation";
+import Styles from "./ReservationItem.module.scss";
 interface IProps {
   reservation: IReservation;
 }
@@ -11,7 +11,7 @@ const ReservationItem: React.FC<IProps> = ({ reservation }) => {
   const reservationStore = useContext(ReservationStore);
   const { selectResevation, deleteReservation } = reservationStore;
   return (
-    <div style={{ width: "30%" }}>
+    <div className={Styles["reservation-card"]}>
       <Card id={reservation.name}>
         <Card.Body>
           <Card.Title>{reservation.name}</Card.Title>

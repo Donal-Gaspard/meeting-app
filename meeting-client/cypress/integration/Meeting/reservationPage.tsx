@@ -14,15 +14,6 @@ let avaibillities: string[] = [];
 let urlAvaibillities = "";
 
 describe("reservation page tests", () => {
-  //   beforeEach(() => {
-  //     cy.request(urlAvaibillities).then((res) => {
-  //       console.log("res :>> ", res);
-  //       expect(res.status).to.eq(200);
-  //       avaibillities = res.body;
-  //       console.log("res :>> ", res.body);
-  //     });
-  //   });
-
   beforeEach(() => {
     cy.visit("http://localhost:3000/");
     urlAvaibillities = `https://localhost:44364/api/reservations/avaibillities?roomId=${reservation.roomId}&date=${reservation.date}`;

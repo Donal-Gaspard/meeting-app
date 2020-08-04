@@ -4,7 +4,8 @@ import { observer } from "mobx-react-lite";
 import { Spinner, Row } from "react-bootstrap";
 import ReservationsRoomList from "./ReservationsRoomList";
 import RoomSelect from "../../UI/RoomSelect";
-export const Rooms = () => {
+
+ const Rooms = () => {
   const roomStore = useContext(RoomStore);
   const { loadingDetails } = roomStore;
 

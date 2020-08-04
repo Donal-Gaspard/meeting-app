@@ -25,6 +25,7 @@ function App() {
         <Spinner animation="border" />{" "}
       </Container>
     );
+
   return (
     <div className="App">
       <ToastContainer autoClose={3000} position="bottom-right" />

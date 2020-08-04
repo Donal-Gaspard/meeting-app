@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import ReservationStore from "../../../store/ReservationStore";
 import { observer } from "mobx-react-lite";
-import ReservationItem from "../ReservationItem";
+import ReservationItem from "../ReservationItem/ReservationItem";
 import { Button, Badge } from "react-bootstrap";
 
 import Styles from "./ReservationList.module.scss";

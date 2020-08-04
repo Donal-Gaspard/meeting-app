@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Application;
 using Data;
 using Domain;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -20,7 +18,7 @@ namespace API.Controllers
         private readonly MeetingDbContext _context;
         private readonly ILogger<ReservationsController> _logger;
 
-        public ReservationsController(MeetingDbContext context, ILogger<ReservationsController> logger)
+        public ReservationsController(MeetingDbContext context, ILogger<ReservationsController> logger, IWebHostEnvironment host)
         {
             this._context = context;
             _logger = logger;
@@ -54,21 +52,30 @@ namespace API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var reserv = new Reservation
+                try
                 {
-                    Id = reservation.Id,
-                    Name = reservation.Name,
-                    RoomId = reservation.RoomId,
-                    UserId = reservation.UserId,
-                    TimePeriod = reservation.TimePeriod,
-                    Date = reservation.Date
-                };
+                    var reserv = new Reservation
+                    {
+                        Id = reservation.Id,
+                        Name = reservation.Name,
+                        RoomId = reservation.RoomId,
+                        UserId = reservation.UserId,
+                        TimePeriod = reservation.TimePeriod,
+                        Date = reservation.Date
+                    };
 
-                _context.Reservations.Add(reserv);
+                    _context.Reservations.Add(reserv);
 
-                await _context.SaveChangesAsync();
-                _logger.LogInformation($"resevation save id: {reservation.Id}");
-                return Ok(reservation);
+                    await _context.SaveChangesAsync();
+                    ReservasionsStore.Save(_context.Reservations.ToList());
+                    _logger.LogInformation($"resevation save id: {reservation.Id}");
+                    return Ok(reservation);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("Error occurend creating reservation", ex);
+                        return StatusCode(500);
+                }
             }
             return BadRequest(ModelState.Values.SelectMany(v => v.Errors).ToList());
         }
@@ -115,5 +122,6 @@ namespace API.Controllers
 
             return Ok("Done!");
         }
+
     }
 }

@@ -1,17 +1,17 @@
-import React from "react";
+import React, { Fragment } from "react";
 import ReservationForm from "../ReservationForm/ReservationForm";
 import ReservationList from "../ReservationList/ReservationList";
 import { observer } from "mobx-react-lite";
 import Styles from "./ReservationDashboard.module.scss";
 
-export const ReservationDashboard = () => {
+const ReservationDashboard = () => {
   return (
-    <div>
+    <Fragment>
       <ReservationList />
       <div className={Styles["reservation-form"]}>
         <ReservationForm />
       </div>
-    </div>
+    </Fragment>
   );
 };
 

@@ -6,7 +6,7 @@ import IReservation from "../../models/IReservation";
 interface IProps {
   reservation: IReservation;
 }
-export const ReservationRoomItem: React.FC<IProps> = ({ reservation }) => {
+const ReservationRoomItem: React.FC<IProps> = ({ reservation }) => {
   return (
     <div style={{ padding: "5px 0" }}>
       <Alert key={reservation.id} variant="info">

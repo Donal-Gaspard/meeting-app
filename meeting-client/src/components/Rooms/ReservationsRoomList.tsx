@@ -1,6 +1,6 @@
 import React, { useContext, Fragment } from "react";
 import RoomStore from "../../store/RoomStore";
-import { ReservationRoomItem } from "./ReservationRoomItem";
+import  ReservationRoomItem  from "./ReservationRoomItem";
 
 export const ReservationsRoomList = () => {
   const roomStore = useContext(RoomStore);

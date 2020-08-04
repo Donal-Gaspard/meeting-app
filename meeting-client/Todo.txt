@@ -1,3 +1,0 @@
-TODO: button add form captal case
-TODO: after delete reset
-TODO: Edit scroll to create form

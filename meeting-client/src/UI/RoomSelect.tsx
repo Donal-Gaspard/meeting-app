@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext } from "react";
 import RoomStore from "../store/RoomStore";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
@@ -19,15 +19,13 @@ const RoomSelect: React.FC<{ variant: string }> = ({ variant }) => {
   });
 
   return (
-    <Fragment>
-      <DropdownButton
-        variant={variant}
-        id="dropdown-basic-button"
-        title="Rooms list"
-      >
-        {displayRooms}
-      </DropdownButton>
-    </Fragment>
+    <DropdownButton
+      variant={variant}
+      id="dropdown-basic-button"
+      title="Rooms list"
+    >
+      {displayRooms}
+    </DropdownButton>
   );
 };
 

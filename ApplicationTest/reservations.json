@@ -1,0 +1,50 @@
+[
+  {
+    "id": "b66ca0d4-3a65-453e-8c48-77109a6b5f17",
+    "userId": 1,
+    "roomId": 1,
+    "name": "Draft project",
+    "date": "2020-01-02T00:00:00",
+    "timePeriod": "10h - 11h",
+    "room": {
+      "id": 1,
+      "name": "room 1",
+      "reservations": [
+        {
+          "id": "a8b10b92-792e-4f59-a58a-3108c83335c9",
+          "userId": 1,
+          "roomId": 2,
+          "name": "Project faucon",
+          "date": "2020-01-01T00:00:00",
+          "timePeriod": "8h - 9h",
+          "user": null
+        }
+      ]
+    },
+    "user": null
+  },
+  {
+    "id": "a8b10b92-792e-4f59-a58a-3108c83335c9",
+    "userId": 1,
+    "roomId": 2,
+    "name": "Project faucon",
+    "date": "2020-01-01T00:00:00",
+    "timePeriod": "8h - 9h",
+    "room": {
+      "id": 1,
+      "name": "room 1",
+      "reservations": [
+        {
+          "id": "b66ca0d4-3a65-453e-8c48-77109a6b5f17",
+          "userId": 1,
+          "roomId": 1,
+          "name": "Draft project",
+          "date": "2020-01-02T00:00:00",
+          "timePeriod": "10h - 11h",
+          "user": null
+        }
+      ]
+    },
+    "user": null
+  }
+]
