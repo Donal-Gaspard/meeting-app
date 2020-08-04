@@ -2,7 +2,6 @@ import React, {
   useContext,
   useState,
   useEffect,
-  Fragment,
   useRef,
 } from "react";
 import { Card, Form, Badge } from "react-bootstrap";
@@ -118,6 +117,8 @@ const EditReservation = () => {
       console.log("Edit :>> ");
       editReservation(reservation);
       setReservation(defautReservation);
+      handleReset();
+      setValidated(false);
     } else {
       console.log("create :>> ");
       addReservation(reservation);
@@ -216,6 +217,7 @@ const EditReservation = () => {
             )}
             {editMode && (
               <Button
+                id="btn-cancel"
                 style={{ float: "left" }}
                 size="sm"
                 onClick={cancelEditHandle}
@@ -225,12 +227,13 @@ const EditReservation = () => {
               </Button>
             )}
             <Button
+              name="btn-success"
               style={{ float: "right" }}
               size="sm"
               type="submit"
               variant="success"
             >
-              {editMode ? "update" : "add"}
+              {editMode ? "Update" : "Add"}
             </Button>
           </Form>
         </Card.Body>

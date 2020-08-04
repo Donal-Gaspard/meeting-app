@@ -12,7 +12,7 @@ const ReservationItem: React.FC<IProps> = ({ reservation }) => {
   const { selectResevation, deleteReservation } = reservationStore;
   return (
     <div style={{ width: "30%" }}>
-      <Card>
+      <Card id={reservation.name}>
         <Card.Body>
           <Card.Title>{reservation.name}</Card.Title>
           <Card.Text>
@@ -21,6 +21,7 @@ const ReservationItem: React.FC<IProps> = ({ reservation }) => {
             Room {reservation.roomId}
           </Card.Text>
           <Button
+            id={`btn-delete-${reservation.name}`}
             style={{ float: "left" }}
             onClick={() => deleteReservation(reservation.id)}
             size="sm"
@@ -29,6 +30,7 @@ const ReservationItem: React.FC<IProps> = ({ reservation }) => {
             Delete
           </Button>
           <Button
+            id={`btn-edit-${reservation.name}`}
             style={{ float: "right" }}
             onClick={() => selectResevation(reservation.id)}
             size="sm"
